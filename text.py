@@ -25,7 +25,7 @@ for path in os.listdir():
                                     for village in town['villages']:
                                         output.write('\t' * 4 + village['name'] + '\n')
                     elif 'towns' in city:
-                        output.write('\t' * 2 + '市辖区' + '\n')
+                        output.write('\t' * 2 + '\n')
                         for town in city['towns']:
                             output.write('\t' * 3 + town['name'] + '\n')
                             for village in town['villages']:
@@ -45,6 +45,6 @@ with open('中国.txt', 'w', encoding='utf8') as output:
                             for town in county['towns']:
                                 output.write('\t' * 3 + town['name'] + '\n')
                 elif 'towns' in city:
-                    output.write('\t' * 2 + '市辖区' + '\n')
+                    output.write('\t' * 2 + '\n')
                     for town in city['towns']:
                         output.write('\t' * 3 + town['name'] + '\n')
