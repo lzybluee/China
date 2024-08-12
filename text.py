@@ -12,14 +12,28 @@ def print_towns(parent, output, print_village=True):
                     break
         else:
             strip_flag = False
+
         for town in parent['towns']:
             if strip_flag:
                 output.write('\t' * 3 + town['name'].replace(parent['name'], '', 1) + '\n')
             else:
                 output.write('\t' * 3 + town['name'] + '\n')
+
             if print_village:
+                strip_town = True
+                if len(town['villages']) > 1:
+                    for village in town['villages']:
+                        if not village['name'].startswith(town['name']):
+                            strip_town = False
+                            break
+                else:
+                    strip_town = False
+
                 for village in town['villages']:
-                    output.write('\t' * 4 + village['name'] + '\n')
+                    if strip_town:
+                        output.write('\t' * 4 + village['name'].replace(town['name'], '', 1) + '\n')
+                    else:
+                        output.write('\t' * 4 + village['name'] + '\n')
 
 
 def print_city(city, output, print_village=True):
