@@ -4,33 +4,29 @@ import os
 
 def print_towns(parent, output, print_village=True):
     if 'towns' in parent:
-        strip_flag = True
-        if len(parent['towns']) > 1:
-            for town in parent['towns']:
-                if not town['name'].startswith(parent['name']):
-                    strip_flag = False
-                    break
-        else:
-            strip_flag = False
-
+        town_types = ['街道', '镇', '乡']
         for town in parent['towns']:
-            if strip_flag:
-                output.write('\t' * 3 + town['name'].replace(parent['name'], '', 1) + '\n')
+            if any([town['name'].endswith(t) for t in town_types]) and town['name'].startswith(parent['name']):
+                replaced = town['name'].replace(parent['name'], '', 1)
+                if replaced in town_types:
+                    output.write('\t' * 3 + town['name'] + '\n')
+                else:
+                    output.write('\t' * 3 + replaced + '\n')
             else:
                 output.write('\t' * 3 + town['name'] + '\n')
 
             if print_village:
-                strip_town = True
+                strip_flag = True
                 if len(town['villages']) > 1:
                     for village in town['villages']:
                         if not village['name'].startswith(town['name']):
-                            strip_town = False
+                            strip_flag = False
                             break
                 else:
-                    strip_town = False
+                    strip_flag = False
 
                 for village in town['villages']:
-                    if strip_town:
+                    if strip_flag:
                         output.write('\t' * 4 + village['name'].replace(town['name'], '', 1) + '\n')
                     else:
                         output.write('\t' * 4 + village['name'] + '\n')
