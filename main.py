@@ -93,8 +93,8 @@ def get_cities(url, province):
     table = html[html.index('<table class='):html.index('</table>')]
     lines = table.split('<tr class="citytr">')[1:]
     for line in lines:
-        cells = re.findall('<td>(.*?)</td>', line)
-        entries = [re.sub('<.*?>', '', cell) for cell in cells]
+        cells = re.findall('<td>(.*?)</td>', line, re.DOTALL)
+        entries = [re.sub('<.*?>', '', cell.strip()) for cell in cells]
         city = {'name': entries[1], 'code': entries[0]}
         if href := re.findall('href="(.*?)"', line):
             if counties := get_counties(url[:url.rindex('/') + 1] + href[0], province + '-' + city['name']):
@@ -134,7 +134,7 @@ def get_provinces(year, executor):
 def get_china():
     executor = ThreadPoolExecutor(8)
 
-    for i in range(2009, 2024):
+    for i in range(2009, 2023):
         get_provinces(str(i), executor)
 
     executor.shutdown()
